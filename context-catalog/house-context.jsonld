@@ -1,0 +1,9 @@
+{
+    "@context": {
+        "House": "http://example.org/House",
+        "hasRoom": "http://example.org/hasRoom",
+        "Room": "http://example.org/Room",
+        "isPartOf": "http://example.org/isPartOf"
+    }
+}
+
