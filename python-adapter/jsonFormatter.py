@@ -60,33 +60,39 @@ import hashlib
 # Folder where to log
 FOLDER = '/var/log/jsonFormatter/'
 
-def prometheus2NGSI_LDFormat(json2Format):
+def prometheus2NGSI_LDFormat(dict2Format):
     '''Parsing function.
-    This function takes a json which is supposed to be checked by checkPrometheusFormat function and parses it to NGSI-LD format.
+    This function takes a dict which is supposed to be previously checked by checkPrometheusFormat function and parses it to NGSI-LD format.
+    Returns the dictionary directly as a json string.
     '''
     formattedJson = dict()
 
     # Prometheus internally uses a 64-bit FNV-1 hash of the result.metric labels to identify a metric with a certain timestamp.
     # We are going to reuse this concept, but instead of using a FNV-1 hash, we are just going to do the MD5 hash of this dictionary.
-    stringifiedLabels = json.dumps(json2Check['data']['result'][0]['metric'], sort_keys=True) # sort_keys so that it does not affect
+    stringifiedLabels = json.dumps(dict2Format['data']['result'][0]['metric'], sort_keys=True, indent=2) # sort_keys so that order does not affect
     hashedLabels = hashlib.md5(stringifiedLabels.encode("utf-8")).hexdigest()
     
     # Extract '__name__' from result.metric labels
-    metricName = str(json2Check['data']['result'][0]['metric'].pop('__name__'))
+    metricName = str(dict2Format['data']['result'][0]['metric'].pop('__name__'))
 
     # Now we create the dictionary key by key
     # Some part of this code could have been simplified with a for loop, but we consider this would decrease readability
-    formattedJson['id']                = 'urn:ngsi-ld:Metric:' + hashedLabels
-    formattedJson['type']              = 'Metric'
-    formattedJson['name']              = dict()
-    formattedJson['name']['type']      = 'Property'
-    formattedJson['timestamp']         = dict()
-    formattedJson['timestamp']['type'] = 'Property'
-    formattedJson['value']             = dict()
-    formattedJson['value']['type']     = 'Property'
-    formattedJson['labels']            = dict()
-    formattedJson['labels']['type']    = 'Property'
-
+    formattedJson['id']                 = 'urn:ngsi-ld:Metric:' + hashedLabels
+    formattedJson['type']               = 'Metric'
+    formattedJson['name']               = dict()
+    formattedJson['name']['type']       = 'Property'
+    formattedJson['name']['value']      = metricName
+    formattedJson['timestamp']          = dict()
+    formattedJson['timestamp']['type']  = 'Property'
+    formattedJson['timestamp']['value'] = str(int(dict2Format['data']['result'][0]['value'][0]))
+    formattedJson['value']              = dict()
+    formattedJson['value']['type']      = 'Property'
+    formattedJson['value']['value']     = dict2Format['data']['result'][0]['value'][1]
+    formattedJson['labels']             = dict()
+    formattedJson['labels']['type']     = 'Property'
+    formattedJson['labels']['value']    = dict2Format['data']['result'][0]['metric'].copy()
+    
+    return json.dumps(formattedJson)
 
 
 def checkPrometheusFormat(dict2Check):
@@ -197,8 +203,9 @@ def main(log=False, debug=False):
             logger.log(logging.ERROR, '    Exception msg : ' +              str(e)               ) # Requires python 3.0 or greater
         raise e
 
-
-
+    # Log formatted json
+    if log:
+        logger.log(logging.INFO, 'Formatted json json: ' + newJson)
 
     # In the ExecuteStreamCommand processor of Nifi, sys.stdout is the outcoming FlowFile
 
