@@ -150,12 +150,12 @@ def main(log=False, debug=False):
         logger = logging.getLogger('jsonFormatter_' + nowString)
         file_handler = logging.FileHandler(logfileName)
         file_handler.setFormatter(logging.Formatter('%(asctime)s [%(levelname)s] %(message)s'))
-        logger.addHandler(console_handler)
+        logger.addHandler(file_handler)
 
         # Uncomment handler to log in console (be careful, in the ExecuteStreamCommand of nifi sys.stdout is the outcoming FlowFile)
         # console_handler = logging.StreamHandler(sys.stdout)
         # console_handler.setFormatter(logging.Formatter('%(asctime)s [%(levelname)s] %(message)s'))
-        # logger.addHandler(file_handler)
+        # logger.addHandler(console_handler)
 
 
         # Set level depending on debug argument
@@ -211,7 +211,7 @@ def main(log=False, debug=False):
         logger.log(logging.INFO, 'Formatted json: ' + newJson)
 
     # In the ExecuteStreamCommand processor of Nifi, sys.stdout is the outcoming FlowFile
-    print(newJson)
+    sys.stdout.write(newJson)
 
 if __name__ == "__main__":
     prog = sys.argv[0]
