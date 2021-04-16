@@ -150,8 +150,9 @@ def main(log=False, debug=False):
         logger = logging.getLogger('jsonFormatter_' + nowString)
         file_handler = logging.FileHandler(logfileName)
         file_handler.setFormatter(logging.Formatter('%(asctime)s [%(levelname)s] %(message)s'))
-        console_handler = logging.StreamHandler(sys.stdout)
-        console_handler.setFormatter(logging.Formatter('%(asctime)s [%(levelname)s] %(message)s'))
+        # Uncomment handler to log in console (be careful, in the ExecuteStreamCommand of nifi sys.stdout is the outcoming FlowFile)
+        # console_handler = logging.StreamHandler(sys.stdout)
+        # console_handler.setFormatter(logging.Formatter('%(asctime)s [%(levelname)s] %(message)s'))
         
         logger.addHandler(file_handler)
         logger.addHandler(console_handler)
@@ -162,7 +163,8 @@ def main(log=False, debug=False):
         else:
             logger.setLevel(logging.INFO)
 
-    # This is the way to log in this program. When logging.DEBUG, it will only be actually written in file and console if debug argument was True
+    # This is the way to log in this program. When logging.DEBUG, it will only be actually written in file and console
+    # (if console handler is uncommented) if debug argument was True
     if log: 
         logger.log(logging.DEBUG, 'Program begins')
 
@@ -208,7 +210,7 @@ def main(log=False, debug=False):
         logger.log(logging.INFO, 'Formatted json: ' + newJson)
 
     # In the ExecuteStreamCommand processor of Nifi, sys.stdout is the outcoming FlowFile
-    sys.stdout.write(newJson)
+    print(newJson)
 
 if __name__ == "__main__":
     prog = sys.argv[0]
