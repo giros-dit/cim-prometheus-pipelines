@@ -1,15 +1,11 @@
 FROM apache/nifi
 
+# Install python3
 USER root
+RUN apt-get update -y
+RUN apt-get install -y python3
 
-RUN apt-get update
-
-RUN add-apt-repository -y ppa:deadsnakes/ppa
-
-RUN apt install python3.8
-
-RUN mkdir -p '/var/log/jsonFormatter'
-
-RUN chown nifi:nifi '/var/log/jsonFormatter'
-
-COPY --chown=nifi:nifi jsonFormatter.py /home/nifi/ 
+# Create log folder and copy script
+RUN mkdir -p /var/log/jsonFormatter
+RUN chown nifi:nifi /var/log/jsonFormatter
+COPY --chown=nifi:nifi jsonFormatter.py /home/nifi/

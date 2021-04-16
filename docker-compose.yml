@@ -24,7 +24,7 @@ services:
     depends_on:
       - zookeeper
   nifi:
-    image: apache/nifi
+    image: jlmendo11/nifi-python
     hostname: nifi
     container_name: nifi
     ports:
