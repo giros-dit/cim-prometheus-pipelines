@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <template encoding-version="1.3">
-    <description>fully functional</description>
+    <description>fully operational 12/05/2021 11:43</description>
     <groupId>da4decc0-0178-1000-436d-e3c2672d0cac</groupId>
-    <name>backup prometheus-scorpio-adapter</name>
+    <name>prometheus-scorpio-adapter</name>
     <snippet>
         <processGroups>
             <id>d2efa59f-7d47-3792-0000-000000000000</id>
@@ -834,6 +834,25 @@ for a better debugging and routing</label>
                     <width>120.0</width>
                 </labels>
                 <labels>
+                    <id>1fc32ec9-93d9-3f28-0000-000000000000</id>
+                    <parentGroupId>d2efa59f-7d47-3792-0000-000000000000</parentGroupId>
+                    <position>
+                        <x>3328.0</x>
+                        <y>112.0</y>
+                    </position>
+                    <height>56.0</height>
+                    <label>Add  "Content-Type=application/json" and 
+"mime.type=application/json" as attributes 
+to improve visualization</label>
+                    <style>
+                        <entry>
+                            <key>font-size</key>
+                            <value>12px</value>
+                        </entry>
+                    </style>
+                    <width>264.0</width>
+                </labels>
+                <labels>
                     <id>302af0d5-d33a-31ba-0000-000000000000</id>
                     <parentGroupId>d2efa59f-7d47-3792-0000-000000000000</parentGroupId>
                     <position>
@@ -856,7 +875,7 @@ JUST FOR DEBUGGING PURPOSES</label>
                     <parentGroupId>d2efa59f-7d47-3792-0000-000000000000</parentGroupId>
                     <position>
                         <x>3000.0</x>
-                        <y>264.0</y>
+                        <y>448.0</y>
                     </position>
                     <height>24.0</height>
                     <label>SUCCESFULLY DELETED</label>
@@ -925,7 +944,7 @@ JUST FOR DEBUGGING PURPOSES</label>
                     <parentGroupId>d2efa59f-7d47-3792-0000-000000000000</parentGroupId>
                     <position>
                         <x>3000.0</x>
-                        <y>448.0</y>
+                        <y>264.0</y>
                     </position>
                     <height>24.0</height>
                     <label>COULD NOT DELETE (TIPICALLY, NOT FOUND)</label>
@@ -1797,7 +1816,7 @@ for a better debugging and routing</label>
                             </entry>
                             <entry>
 <key>entity-id</key>
-<value>"id":\s"(.*?)"</value>
+<value>"id"\s*:\s*"(.*?)"</value>
                             </entry>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
@@ -3504,7 +3523,7 @@ for a better debugging and routing</label>
                         <autoTerminate>false</autoTerminate>
                         <name>Retry</name>
                     </relationships>
-                    <state>DISABLED</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.InvokeHTTP</type>
                 </processors>
@@ -5304,5 +5323,5 @@ for a better debugging and routing</label>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>05/03/2021 15:06:08 UTC</timestamp>
+    <timestamp>05/12/2021 09:43:11 UTC</timestamp>
 </template>

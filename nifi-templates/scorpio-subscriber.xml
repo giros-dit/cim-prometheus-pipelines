@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <template encoding-version="1.3">
-    <description></description>
+    <description>fully operational 12/05/2021 11:43</description>
     <groupId>da4decc0-0178-1000-436d-e3c2672d0cac</groupId>
     <name>scorpio-subscriber</name>
     <snippet>
@@ -1983,5 +1983,5 @@ more comfortable because you don't have to exit nifi nor finding the ip</label>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>05/04/2021 09:15:00 UTC</timestamp>
+    <timestamp>05/12/2021 09:43:24 UTC</timestamp>
 </template>
