@@ -24,12 +24,16 @@ services:
     depends_on:
       - zookeeper
   nifi:
-    image: jlmendo11/nifi-python
+    build:
+      context: ./nifi-python
+      dockerfile: Dockerfile
     hostname: nifi
     container_name: nifi
     ports:
       - "8080:8080"
-  node-exporter:
+    volumes:
+      - ./results:/home/nifi/results
+  node-exporter-:
     image: prom/node-exporter
     hostname: node-exporter
     container_name: node-exporter

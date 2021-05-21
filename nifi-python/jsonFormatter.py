@@ -1,10 +1,10 @@
 #!/usr/bin/python
 
-# This code is an json-to-json format processor used in cim-prometheus-pipelines as an adapter 
+# This code is an json-to-json format processor used in cim-prometheus-pipelines as an adapter
 # to change between prometheus format to the NGSI-LD format that a CIM context broker like Scorpio requires:
 #
 # From one that looks like this:
-# 
+#
 # {
 #   "status" : "success",
 #   "data" : {
@@ -19,9 +19,9 @@
 #     } ]
 #   }
 # }
-# 
+#
 # To another that looks like this:
-# 
+#
 # {
 #     "id": "urn:ngsi-ld:Metric:hash_function(result[0].metric)",
 #     "type": "Metric",
@@ -45,7 +45,7 @@
 #         }
 #     }
 # }
-# 
+#
 # Author: José Luis Mendoza Sánchez,
 # Departamento de Ingeniería Telemática de la Universidad Politécnica de Madrid (DIT-UPM)
 
@@ -69,11 +69,11 @@ def prometheus2NGSI_LDFormat(dict2Format):
 
     # Prometheus internally uses a 64-bit FNV-1 hash of the result.metric labels to identify a metric with a certain timestamp.
     # We are going to reuse this concept, but instead of using a FNV-1 hash, we are just going to do the MD5 hash of this dictionary.
-    stringifiedLabels = json.dumps(dict2Format['data']['result'][0]['metric'], sort_keys=True, indent=2) # sort_keys so that order does not affect
+    stringifiedLabels = json.dumps(dict2Format['metric'], sort_keys=True, indent=2) # sort_keys so that order does not affect
     hashedLabels = hashlib.md5(stringifiedLabels.encode("utf-8")).hexdigest()
-    
+
     # Extract '__name__' from result.metric labels
-    metricName = str(dict2Format['data']['result'][0]['metric'].pop('__name__'))
+    metricName = str(dict2Format['metric'].pop('__name__'))
 
     # Now we create the dictionary key by key
     # Some part of this code could have been simplified with a for loop, but we consider this would decrease readability
@@ -84,20 +84,20 @@ def prometheus2NGSI_LDFormat(dict2Format):
     formattedJson['name']['value']      = metricName
     formattedJson['timestamp']          = dict()
     formattedJson['timestamp']['type']  = 'Property'
-    formattedJson['timestamp']['value'] = str(int(dict2Format['data']['result'][0]['value'][0]))
+    formattedJson['timestamp']['value'] = str(int(dict2Format['value'][0]))
     formattedJson['value']              = dict()
     formattedJson['value']['type']      = 'Property'
-    formattedJson['value']['value']     = dict2Format['data']['result'][0]['value'][1]
+    formattedJson['value']['value']     = dict2Format['value'][1]
     formattedJson['labels']             = dict()
     formattedJson['labels']['type']     = 'Property'
-    formattedJson['labels']['value']    = dict2Format['data']['result'][0]['metric'].copy()
-    
+    formattedJson['labels']['value']    = dict2Format['metric'].copy()
+
     return json.dumps(formattedJson)
 
 
 def checkPrometheusFormat(dict2Check):
     ''' Checking function.
-    This function checks if a given json has the expected Prometheus format. 
+    This function checks if a given json has the expected Prometheus format.
     Otherwise, it raises an AssertionError with a descriptive message.
     '''
     # TODO: if ampliation is needed, consider using dict2Check.keys() method. We did not use it because there was very little advantage.
@@ -113,8 +113,8 @@ def checkPrometheusFormat(dict2Check):
         raise AssertionError("'data.result' key not found inside given json")
     if len(dict2Check['data']['result']) != 1:
         # TODO: in the future, this could be supported
-        raise AssertionError("'data.result' vector length is: " + str(len(dict2Check['data']['result'])) + 
-            '. Expected: 1 (More than one metric are being queried. This processor does not support that)') 
+        raise AssertionError("'data.result' vector length is: " + str(len(dict2Check['data']['result'])) +
+            '. Expected: 1 (More than one metric are being queried. This processor does not support that)')
     if 'metric' not in dict2Check['data']['result'][0]:
         raise AssertionError("'data.result[0].metric' key not found inside given json")
     if '__name__' not in dict2Check['data']['result'][0]['metric']:
@@ -122,17 +122,17 @@ def checkPrometheusFormat(dict2Check):
     if 'value' not in dict2Check['data']['result'][0]:
         raise AssertionError("'data.result[0].value' key not found inside given json")
     if len(dict2Check['data']['result'][0]['value']) != 2:
-        raise AssertionError("'data.result[0].value' length is: " + str(len(dict2Check['data']['result'][0]['value'])) + 
+        raise AssertionError("'data.result[0].value' length is: " + str(len(dict2Check['data']['result'][0]['value'])) +
             '. Expected: 2 (the timestamp and the actual value of the metric)')
     if not isinstance(dict2Check['data']['result'][0]['value'][0], float):
-        raise AssertionError("'data.result[0].value[0]' is an instance of: " + str(dict2Check['data']['result'][0]['value'][0]) + 
+        raise AssertionError("'data.result[0].value[0]' is an instance of: " + str(dict2Check['data']['result'][0]['value'][0]) +
             '. Expected instance: float (metric timestamp)')
     if not isinstance(dict2Check['data']['result'][0]['value'][1], str):
-        raise AssertionError("'data.result[0].value[1]' is an instance of: " + str(dict2Check['data']['result'][0]['value'][1]) + 
+        raise AssertionError("'data.result[0].value[1]' is an instance of: " + str(dict2Check['data']['result'][0]['value'][1]) +
             '. Expected instance: str (metric value)')
 
 def main(log=False, debug=False):
-    '''Main function. 
+    '''Main function.
     It has 2 arguments which are flags for logging and debugging.
     '''
     if log:
@@ -166,7 +166,7 @@ def main(log=False, debug=False):
 
     # This is the way to log in this program. When logging.DEBUG, it will only be actually written in file and console
     # (if console handler is uncommented) if debug argument was True
-    if log: 
+    if log:
         logger.log(logging.DEBUG, 'Program begins')
 
     # Read the file that came from Nifi
@@ -186,16 +186,17 @@ def main(log=False, debug=False):
     # Log read json
     if log:
         logger.log(logging.INFO, 'Read json: ' + json.dumps(dict2Format))
-    
+
     # Check the given format or raise exception instead
     try:
-        checkPrometheusFormat(dict2Format)
+        # checkPrometheusFormat(dict2Format)
+        pass
     except Exception as e:
         if log:
             logger.log(logging.ERROR, 'Incoming JSON does not have expected format.')
             logger.log(logging.ERROR, '    Exception msg : ' +              str(e)               ) # Requires python 3.0 or greater
         raise e
-    
+
     # Transform the format
     try:
         newJson = prometheus2NGSI_LDFormat(dict2Format)
@@ -225,5 +226,5 @@ if __name__ == "__main__":
     # Extract arguments
     debug = arguments.debug
     log = arguments.log
-    
+
     main(log=log, debug=debug)
