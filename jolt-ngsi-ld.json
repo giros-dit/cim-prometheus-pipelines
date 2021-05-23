@@ -1,0 +1,44 @@
+[
+  {
+    "operation": "shift",
+    "spec": {
+      "metric": {
+        "__name__": "name.value",
+        "@": "labels.value"
+      },
+      "value": {
+        "0": "timestamp.value",
+        "1": "value.value"
+      }
+    }
+  },
+  {
+    "operation": "remove",
+    "spec": {
+      "labels": {
+        "value": {
+          "__name__": ""
+        }
+      }
+    }
+  },
+  {
+    "operation": "default",
+    "spec": {
+      "*": {
+        "type": "Property"
+      },
+      "type": "Metric",
+      "captureTimestamp": {
+        "type": "Property",
+        "value": ${captureTimestamp}
+        }
+      }
+    },
+    {
+      "operation": "modify-default-beta",
+      "spec": {
+        "id": "=concat('urn:ngsi-ld:Metric:','',@(1,labels.value.seed))"
+      }
+    }
+  ]
