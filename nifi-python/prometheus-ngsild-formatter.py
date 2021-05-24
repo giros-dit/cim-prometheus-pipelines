@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-# This code is an json-to-json format processor used in cim-prometheus-pipelines as an adapter 
+# This code is a json-to-json format processor used in cim-prometheus-pipelines as an adapter 
 # to change between prometheus format to the NGSI-LD format that a CIM context broker like Scorpio requires:
 #
 # From one that looks like this:
@@ -58,7 +58,7 @@ import datetime
 import hashlib
 
 # Folder where to log
-FOLDER = '/var/log/jsonFormatter/'
+FOLDER = '/var/log/prometheus-ngsild-formatter/'
 
 def prometheus2NGSI_LDFormat(dict2Format):
     '''Parsing function.
@@ -219,7 +219,7 @@ if __name__ == "__main__":
     # Make all required
     parser = argparse.ArgumentParser(prog=prog, description="Json-to-json adapter used in cim-prometheus-pipelines")
     parser.add_argument('-d','--debug',dest='debug',action='store_true',help="Show debugging information when true")
-    parser.add_argument('-l','--log',dest='log',action='store_true',help="Log information in '/var/log/jsonFormatter/'")
+    parser.add_argument('-l','--log',dest='log',action='store_true',help="Log information in '/var/log/prometheus-ngsild-formatter/'")
     arguments = parser.parse_args()
 
     # Extract arguments
