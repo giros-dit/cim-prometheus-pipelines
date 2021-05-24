@@ -5,8 +5,8 @@
     "doc": "Representation of a Prometheus metric",
     "fields": [
         {
-            "name": "captureTimestamp",
-            "doc": "A millisecond-precision timestamp set upon ingestion with NiFi",
+            "name": "collectionTimestamp",
+            "doc": "A millisecond-precision timestamp of the collection at NiFi",
             "type": "long"
         },
         {
@@ -32,6 +32,6 @@
             "name": "value",
             "doc": "A float64 value of the metric's sample",
             "type": "double"
-        }
+        }        
     ]
 }
