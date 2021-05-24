@@ -6,19 +6,13 @@
 # From one that looks like this:
 # 
 # {
-#   "status" : "success",
-#   "data" : {
-#     "resultType" : "vector",
-#     "result" : [ {
-#       "metric" : {
-#         "__name__" : "node_cpu_seconds_total",
-#         "instance" : "node-exporter:9100",
-#         "job" : "node"
-#       },
-#       "value" : [ 1.618227408904E9, "1616074849" ]
-#     } ]
-#   }
-# }
+#   "metric" : {
+#     "__name__" : "node_cpu_seconds_total",
+#     "instance" : "node-exporter:9100",
+#     "job" : "node"
+#   },
+#   "value" : [ 1.618227408904E9, "1616074849" ]
+# } 
 # 
 # To another that looks like this:
 # 
@@ -69,11 +63,11 @@ def prometheus2NGSI_LDFormat(dict2Format):
 
     # Prometheus internally uses a 64-bit FNV-1 hash of the result.metric labels to identify a metric with a certain timestamp.
     # We are going to reuse this concept, but instead of using a FNV-1 hash, we are just going to do the MD5 hash of this dictionary.
-    stringifiedLabels = json.dumps(dict2Format['data']['result'][0]['metric'], sort_keys=True, indent=2) # sort_keys so that order does not affect
+    stringifiedLabels = json.dumps(dict2Format['metric'], sort_keys=True, indent=2) # sort_keys so that order does not affect
     hashedLabels = hashlib.md5(stringifiedLabels.encode("utf-8")).hexdigest()
     
     # Extract '__name__' from result.metric labels
-    metricName = str(dict2Format['data']['result'][0]['metric'].pop('__name__'))
+    metricName = str(dict2Format['metric'].pop('__name__'))
 
     # Now we create the dictionary key by key
     # Some part of this code could have been simplified with a for loop, but we consider this would decrease readability
@@ -84,13 +78,13 @@ def prometheus2NGSI_LDFormat(dict2Format):
     formattedJson['name']['value']      = metricName
     formattedJson['timestamp']          = dict()
     formattedJson['timestamp']['type']  = 'Property'
-    formattedJson['timestamp']['value'] = str(int(dict2Format['data']['result'][0]['value'][0]))
+    formattedJson['timestamp']['value'] = str(int(dict2Format['value'][0]))
     formattedJson['value']              = dict()
     formattedJson['value']['type']      = 'Property'
-    formattedJson['value']['value']     = dict2Format['data']['result'][0]['value'][1]
+    formattedJson['value']['value']     = dict2Format['value'][1]
     formattedJson['labels']             = dict()
     formattedJson['labels']['type']     = 'Property'
-    formattedJson['labels']['value']    = dict2Format['data']['result'][0]['metric'].copy()
+    formattedJson['labels']['value']    = dict2Format['metric'].copy()
     
     return json.dumps(formattedJson)
 
@@ -101,34 +95,20 @@ def checkPrometheusFormat(dict2Check):
     Otherwise, it raises an AssertionError with a descriptive message.
     '''
     # TODO: if ampliation is needed, consider using dict2Check.keys() method. We did not use it because there was very little advantage.
-    if 'status' not in dict2Check:
-        raise AssertionError("'status' key not found inside given json")
-    if 'data' not in dict2Check:
-        raise AssertionError("'data' key not found inside given json")
-    if 'resultType' not in dict2Check['data']:
-        raise AssertionError("'data.resultType' key not found inside given json")
-    if str(dict2Check['data']['resultType']) != 'vector':
-        raise AssertionError("'data.resultType' takes value: " + str(dict2Check['data']['resultType']) + ". Expected: 'vector'")
-    if 'result' not in dict2Check['data']:
-        raise AssertionError("'data.result' key not found inside given json")
-    if len(dict2Check['data']['result']) != 1:
-        # TODO: in the future, this could be supported
-        raise AssertionError("'data.result' vector length is: " + str(len(dict2Check['data']['result'])) + 
-            '. Expected: 1 (More than one metric are being queried. This processor does not support that)') 
-    if 'metric' not in dict2Check['data']['result'][0]:
+    if 'metric' not in dict2Check:
         raise AssertionError("'data.result[0].metric' key not found inside given json")
-    if '__name__' not in dict2Check['data']['result'][0]['metric']:
+    if '__name__' not in dict2Check['metric']:
         raise AssertionError("'data.result[0].metric.__name__' key not found inside given json")
-    if 'value' not in dict2Check['data']['result'][0]:
+    if 'value' not in dict2Check:
         raise AssertionError("'data.result[0].value' key not found inside given json")
-    if len(dict2Check['data']['result'][0]['value']) != 2:
-        raise AssertionError("'data.result[0].value' length is: " + str(len(dict2Check['data']['result'][0]['value'])) + 
+    if len(dict2Check['value']) != 2:
+        raise AssertionError("'data.result[0].value' length is: " + str(len(dict2Check['value'])) + 
             '. Expected: 2 (the timestamp and the actual value of the metric)')
-    if not isinstance(dict2Check['data']['result'][0]['value'][0], float):
-        raise AssertionError("'data.result[0].value[0]' is an instance of: " + str(dict2Check['data']['result'][0]['value'][0]) + 
+    if not isinstance(dict2Check['value'][0], float):
+        raise AssertionError("'data.result[0].value[0]' is an instance of: " + str(dict2Check['value'][0]) + 
             '. Expected instance: float (metric timestamp)')
-    if not isinstance(dict2Check['data']['result'][0]['value'][1], str):
-        raise AssertionError("'data.result[0].value[1]' is an instance of: " + str(dict2Check['data']['result'][0]['value'][1]) + 
+    if not isinstance(dict2Check['value'][1], str):
+        raise AssertionError("'data.result[0].value[1]' is an instance of: " + str(dict2Check['value'][1]) + 
             '. Expected instance: str (metric value)')
 
 def main(log=False, debug=False):
