@@ -62,8 +62,7 @@ def avro2metric_id(dict2Format):
     # Initialize labels_dictionary
     labels_dictionary = dict()
     labels_dictionary["__name__"] = dict2Format["name"]
-    labels_dictionary["instance"] = dict2Format["labels"]["instance"]
-    labels_dictionary["job"]      = dict2Format["labels"]["job"]
+    labels_dictionary["instance"] = dict2Format["labels"].copy()
 
     # Prometheus internally uses a 64-bit FNV-1 hash of the result.metric labels to identify a metric with a certain timestamp.
     # We are going to reuse this concept, but instead of using a FNV-1 hash, we are just going to do the MD5 hash of this dictionary.
