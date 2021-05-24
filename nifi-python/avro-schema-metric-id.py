@@ -85,8 +85,6 @@ def checkAvroSchemaFormat(dict2Check):
     # TODO: if ampliation is needed, consider using dict2Check.keys() method. We did not use it because there was very little advantage.
     if 'labels' not in dict2Check:
         raise AssertionError("'labels' key not found inside given json")
-    if len(dict2Check['labels']) != 2:
-        raise AssertionError("'labels' document length is: " + str(len(dict2Check['labels'])) + '. Expected: 2') 
     if 'instance' not in dict2Check['labels']:
         raise AssertionError("'labels.instance' key not found inside given json")
     if 'job' not in dict2Check['labels']:
