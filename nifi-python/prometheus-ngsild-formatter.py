@@ -46,8 +46,8 @@
 #     }
 # }
 # 
-# Author: José Luis Mendoza Sánchez,
-# Departamento de Ingeniería Telemática de la Universidad Politécnica de Madrid (DIT-UPM)
+# Author: Jose Luis Mendoza Sanchez,
+# Departamento de Ingenieria Telematica de la Universidad Politecnica de Madrid (DIT-UPM)
 
 import json
 import sys
