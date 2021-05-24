@@ -5,7 +5,7 @@
 #
 # From one that looks like this:
 # 
-# [ {
+# {
 #   "labels" : {
 #     "instance" : "node-exporter:9100",
 #     "job" : "node"
@@ -14,7 +14,7 @@
 #   "timestamp" : 1.621847621678E9,
 #   "value" : "1620127346",
 #   "captureTimestamp" : 1621847621696
-# } ]
+# }
 # 
 # To another that looks like this:
 # 
@@ -57,13 +57,13 @@ def avro2metric_id(dict2Format):
     This function takes a dict which is supposed to be previously checked by checkPrometheusFormat function and calculates the metric-id
     Returns the dictionary directly as a json string.
     '''
-    formattedJson = dict2Format[0]
+    formattedJson = dict2Format
 
     # Initialize labels_dictionary
     labels_dictionary = dict()
-    labels_dictionary["__name__"] = dict2Format[0]["name"]
-    labels_dictionary["instance"] = dict2Format[0]["labels"]["instance"]
-    labels_dictionary["job"]      = dict2Format[0]["labels"]["job"]
+    labels_dictionary["__name__"] = dict2Format["name"]
+    labels_dictionary["instance"] = dict2Format["labels"]["instance"]
+    labels_dictionary["job"]      = dict2Format["labels"]["job"]
 
     # Prometheus internally uses a 64-bit FNV-1 hash of the result.metric labels to identify a metric with a certain timestamp.
     # We are going to reuse this concept, but instead of using a FNV-1 hash, we are just going to do the MD5 hash of this dictionary.
@@ -83,9 +83,6 @@ def checkAvroSchemaFormat(dict2Check):
     '''
 
     # TODO: if ampliation is needed, consider using dict2Check.keys() method. We did not use it because there was very little advantage.
-    if len(dict2Check) != 1:
-        raise AssertionError("Given dictionary array has more or less than 1 element")
-    dict2Check = dict2Check[0]
     if 'labels' not in dict2Check:
         raise AssertionError("'labels' key not found inside given json")
     if len(dict2Check['labels']) != 2:
