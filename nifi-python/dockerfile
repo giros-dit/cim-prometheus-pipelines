@@ -10,4 +10,5 @@ RUN mkdir -p /var/log/prometheus-ngsild-formatter
 RUN chown nifi:nifi /var/log/prometheus-ngsild-formatter
 RUN mkdir -p /var/log/avro-schema-metric-id
 RUN chown nifi:nifi /var/log/avro-schema-metric-id
-COPY --chown=nifi:nifi jsonFormatter.py /home/nifi/
+COPY --chown=nifi:nifi prometheus-ngsild-formatter.py /home/nifi/
+COPY --chown=nifi:nifi avro-schema-metric-id.py /home/nifi/
