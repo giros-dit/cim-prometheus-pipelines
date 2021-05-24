@@ -142,18 +142,18 @@ def main(log=False, debug=False):
         logger.log(logging.DEBUG, 'Program begins')
 
     # Read the file that came from Nifi
-    # try:
-    #     dict2Format = json.load(sys.stdin) # In the ExecuteStreamCommand processor of Nifi, sys.stdin is the incoming FlowFile
-    # except Exception as e:
-    #   if log:
-    #       logger.log(logging.ERROR, 'Exception while parsing incoming FlowFile to JSON format.')
-    #       logger.log(logging.ERROR, '    Exception name: ' +       e.__class__.__name__        )
-    #       logger.log(logging.ERROR, '    Exception msg : ' +              str(e)               ) # Requires python 3.0 or greater
-    #   raise e
+    try:
+        dict2Format = json.load(sys.stdin) # In the ExecuteStreamCommand processor of Nifi, sys.stdin is the incoming FlowFile
+    except Exception as e:
+      if log:
+          logger.log(logging.ERROR, 'Exception while parsing incoming FlowFile to JSON format.')
+          logger.log(logging.ERROR, '    Exception name: ' +       e.__class__.__name__        )
+          logger.log(logging.ERROR, '    Exception msg : ' +              str(e)               ) # Requires python 3.0 or greater
+      raise e
 
     # Uncomment this section to substitute Nifi incoming FlowFile parsing by a mocked one
-    JSON_CONST = '[{"labels":{"instance":"node-exporter:9100","job":"node"},"name":"node_boot_time_seconds","timestamp":1621847621.678,"value":"1620127346","captureTimestamp":{"type":"Property","value":1621847621696}}]'
-    dict2Format = json.loads(JSON_CONST)
+    # JSON_CONST = '[{"labels":{"instance":"node-exporter:9100","job":"node"},"name":"node_boot_time_seconds","timestamp":1621847621.678,"value":"1620127346","captureTimestamp":{"type":"Property","value":1621847621696}}]'
+    # dict2Format = json.loads(JSON_CONST)
 
     # Log read json
     if log:
