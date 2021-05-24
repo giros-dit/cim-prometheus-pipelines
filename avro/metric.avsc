@@ -27,6 +27,12 @@
             "doc": "A millisecond-precision timestamp of the metric's sample",
             "type": "long",
             "logicalType": "local-timestamp-millis"
+        },
+        {
+        	"name": "captureTimestamp",
+        	"doc": "A millisecond-precision timestamp of the metric capturing time",
+        	"type" "long",
+        	"logicalType": "local-timestamp-millis"
         }
     ]
 }
