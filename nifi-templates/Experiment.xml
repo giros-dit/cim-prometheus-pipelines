@@ -8,7 +8,7 @@
             <id>42a600d5-4617-3f29-0000-000000000000</id>
             <parentGroupId>ee3ca20b-1636-3af6-0000-000000000000</parentGroupId>
             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-            <backPressureObjectThreshold>50000</backPressureObjectThreshold>
+            <backPressureObjectThreshold>100000</backPressureObjectThreshold>
             <destination>
                 <groupId>148f79b0-2dc9-340d-0000-000000000000</groupId>
                 <id>69c46852-1f55-3c79-0000-000000000000</id>
@@ -1352,7 +1352,7 @@ to improve visualization</label>
                         <autoTerminate>true</autoTerminate>
                         <name>original</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.MergeRecord</type>
                 </processors>
@@ -1468,7 +1468,7 @@ to improve visualization</label>
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                 </processors>
@@ -1569,7 +1569,7 @@ to improve visualization</label>
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.AttributesToCSV</type>
                 </processors>
@@ -1686,7 +1686,7 @@ to improve visualization</label>
                         <autoTerminate>true</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.PutFile</type>
                 </processors>
@@ -1752,7 +1752,7 @@ to improve visualization</label>
                         <autoTerminate>false</autoTerminate>
                         <name>split</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.SplitJson</type>
                 </processors>
@@ -2020,7 +2020,7 @@ to improve visualization</label>
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.kafka.pubsub.ConsumeKafkaRecord_2_6</type>
                 </processors>
@@ -2126,7 +2126,7 @@ to improve visualization</label>
                         <autoTerminate>true</autoTerminate>
                         <name>unmatched</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.EvaluateJsonPath</type>
                 </processors>
@@ -4799,7 +4799,7 @@ logs into "/var/log/jsonFormatter/" folder
                     <comments></comments>
                     <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
                     <name>ForkInput</name>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <type>INPUT_PORT</type>
                 </inputPorts>
                 <processors>
@@ -4927,7 +4927,7 @@ logs into "/var/log/jsonFormatter/" folder
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.JoltTransformJSON</type>
                 </processors>
@@ -5222,7 +5222,7 @@ logs into "/var/log/jsonFormatter/" folder
                         <autoTerminate>true</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.kafka.pubsub.PublishKafkaRecord_2_6</type>
                 </processors>
@@ -11645,5 +11645,5 @@ extracted from content</label>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>05/26/2021 11:41:38 UTC</timestamp>
+    <timestamp>05/26/2021 11:58:04 UTC</timestamp>
 </template>
