@@ -1,5 +1,8 @@
 
 CONTAINER=$1
-EVENTS=$2
+PLATFORM=$2
+EVENTS=$3
 
-while true; do docker stats $CONTAINER --no-stream --format "{{ .CPUPerc }},{{ .MemPerc }}" | tee --append results/cpu_memory/$CONTAINER/${CONTAINER}_${EVENTS}.csv; sleep 1; done
+mkdir -p results/cpu_memory/${PLATFORM}
+touch results/cpu_memory/${PLATFORM}/${CONTAINER}_${EVENTS}.csv
+while true; do docker stats $CONTAINER --no-stream --format "{{ .CPUPerc }},{{ .MemPerc }}" | tee --append results/cpu_memory/${PLATFORM}/${CONTAINER}_${EVENTS}.csv; sleep 1; done
