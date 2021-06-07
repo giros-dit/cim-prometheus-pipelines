@@ -1,8 +1,8 @@
 {
     "type": "record",
-    "name": "Metric",
+    "name": "Timeseries",
     "namespace": "giros.org",
-    "doc": "Representation of a Prometheus metric",
+    "doc": "Representation of a Prometheus timeseries sample",
     "fields": [
         {
             "name": "collectionTimestamp",
@@ -11,7 +11,7 @@
         },
         {
             "name": "labels",
-            "doc": "Combination of labels that identifies a particular dimensional instantiation of the metric",
+            "doc": "Combination of labels that identifies a particular dimensional instantiation of the timeseries",
             "type": {
                 "type": "map",
                 "values" : "string"
@@ -24,14 +24,14 @@
         },
         {
             "name": "timestamp",
-            "doc": "A millisecond-precision timestamp of the metric's sample",
+            "doc": "A millisecond-precision timestamp of the sample",
             "type": "long",
             "logicalType": "local-timestamp-millis"
         },
         {
             "name": "value",
-            "doc": "A float64 value of the metric's sample",
+            "doc": "A float64 value of the timeseries sample",
             "type": "double"
-        }        
+        }
     ]
 }
