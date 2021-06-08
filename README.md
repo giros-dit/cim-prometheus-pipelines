@@ -44,6 +44,31 @@ Once you are done running tests, tear the scenario down by issuing the following
 docker-compose -f scorpio-compose.yml down
 ```
 
+To subscribe to NGSI-LD TimeSeries entities from NiFi, run the following query using the curl command:
+```
+curl --location --request POST 'http://localhost:9090/ngsi-ld/v1/subscriptions/' \
+--header 'Content-Type: application/json' \
+--header 'Link: <http://context-catalog:8080/context.jsonld>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"' \
+--data-raw '{
+    "id": "urn:ngsi-ld:Subscription:TimeSeries:scorpio-subs",
+    "type": "Subscription",
+    "entities": [{
+        "type": "TimeSeries"
+    }],
+    "notification": {
+        "endpoint": {
+            "uri": "http://nifi:18080/notify",
+            "accept": "application/json"
+        }
+    }
+}'
+```
+
+To delete subscriptions to NGSI-LD TimeSeries entities from NiFi, run the following query using the curl command:
+```
+curl --location --request DELETE 'http://localhost:9090/ngsi-ld/v1/subscriptions/urn:ngsi-ld:Subscription:TimeSeries:scorpio-subs'
+```
+
 ### Orion-LD Scenario
 
 Start the prototype by running docker-compose:
@@ -59,6 +84,31 @@ docker-compose -f orion-compose.yml up -d
 Once you are done running tests, tear the scenario down by issuing the following command - run the command twice in case the executions gets stuck at some service:
 ```bash
 docker-compose -f orion-compose.yml down
+```
+
+To subscribe to NGSI-LD TimeSeries entities from NiFi, make the following query using the curl command:
+```
+curl --location --request POST 'http://localhost:1026/ngsi-ld/v1/subscriptions/' \
+--header 'Content-Type: application/json' \
+--header 'Link: <http://context-catalog:8080/context.jsonld>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"' \
+--data-raw '{
+    "id": "urn:ngsi-ld:Subscription:TimeSeries:orion-subs",
+    "type": "Subscription",
+    "entities": [{
+        "type": "TimeSeries"
+    }],
+    "notification": {
+        "endpoint": {
+            "uri": "http://nifi:18080/notify",
+            "accept": "application/json"
+        }
+    }
+}'
+```
+
+To delete subscriptions to NGSI-LD TimeSeries entities from NiFi, run the following query using the curl command:
+```
+curl --location --request DELETE 'http://localhost:1026/ngsi-ld/v1/subscriptions/urn:ngsi-ld:Subscription:TimeSeries:orion-subs'
 ```
 
 ### Kafka Scenario
