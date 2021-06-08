@@ -61,23 +61,6 @@ Once you are done running tests, tear the scenario down by issuing the following
 docker-compose -f orion-compose.yml down
 ```
 
-### Stellio Scenario
-
-Stellio's docker-compose file uses an environment file to define variables. To start the prototype that deploys Stellio Context Broker, issue the following command:
-```bash
-docker-compose --env-file .stellio-env -f stellio-compose.yml up
-```
-
-In case you are interested in running the prototype in background (kafka or stellio logs may be annoying), use the following command:
-```bash
-docker-compose --env-file .stellio-env -f stellio-compose.yml up -d
-```
-
-Once you are done running tests, tear the scenario down by issuing the following command - run the command twice in case the executions gets stuck at some service:
-```bash
-docker-compose -f stellio-compose.yml down
-```
-
 ### Kafka Scenario
 
 Start the prototype by running docker-compose:
