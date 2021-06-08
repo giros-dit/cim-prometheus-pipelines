@@ -19,7 +19,7 @@ services:
       - "8080:8080"
     volumes:
       - ./results:/home/nifi/results
-  node-exporter-:
+  node-exporter:
     image: prom/node-exporter
     hostname: node-exporter
     container_name: node-exporter
@@ -35,7 +35,7 @@ services:
       - "9099:9090"
     volumes:
       - ./prometheus/config/prometheus.yml:/etc/prometheus/prometheus.yml
-    
+
   orion:
     image: fiware/orion-ld
     hostname: orion
@@ -53,7 +53,7 @@ services:
     hostname: mongo-db
     container_name: db-mongo
     ports:
-      - "27017:27017" 
+      - "27017:27017"
     networks:
       - default
     command: --nojournal

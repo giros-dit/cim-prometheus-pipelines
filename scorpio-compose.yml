@@ -33,7 +33,7 @@ services:
       - "8080:8080"
     volumes:
       - ./results:/home/nifi/results
-  node-exporter-:
+  node-exporter:
     image: prom/node-exporter
     hostname: node-exporter
     container_name: node-exporter
