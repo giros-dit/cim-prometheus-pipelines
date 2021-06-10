@@ -1,0 +1,241 @@
+{
+	"info": {
+		"_postman_id": "e762bff6-2fce-4e77-bc05-925bd24c14d4",
+		"name": "Demo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get metric from scorpio",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9090/ngsi-ld/v1/entities/urn:ngsi-ld:Metric:15dc7c3177b43ece04a5e697045af347",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"ngsi-ld",
+						"v1",
+						"entities",
+						"urn:ngsi-ld:Metric:15dc7c3177b43ece04a5e697045af347"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete metric in scorpio",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9090/ngsi-ld/v1/entities/urn:ngsi-ld:Metric:15dc7c3177b43ece04a5e697045af347",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"ngsi-ld",
+						"v1",
+						"entities",
+						"urn:ngsi-ld:Metric:15dc7c3177b43ece04a5e697045af347"
+					]
+				},
+				"description": "This example returns the data of `urn:ngsi-ld:Building:farm001`. The NGSI-LD `@context` is supplied as a [`Link` header](https://www.w3.org/wiki/LinkHeader) to define the entities returned. The `ngsi-context.jsonld` `@context` file is just supplying short names for every attribute.\n\nThe full link header syntax can be seen below:\n\n```text\nLink: <https://fiware.github.io/data-models/context.jsonld>; rel=\"http://www.w3.org/ns/json-ld#context\"; type=\"application/ld+json\n```\n\nThe standard HTTP `Link` header allows metadata (in this case the `@context`) to be passed in without actually touching\nthe resource in question. In the case of NGSI-LD, the metadata is a file in `application/ld+json` format."
+			},
+			"response": []
+		},
+		{
+			"name": "Register metric",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Link",
+						"value": "<http://context-catalog:8080/context.jsonld>; rel=\"http://www.w3.org/ns/json-ld#context\"; type=\"application/ld+json\"",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\" : \"\\/urn:ngsi-ld:Metric:15dc7c3177b43ece04a5e697045af347\",\n  \"type\" : \"Metric\",\n  \"name\" : {\n    \"type\" : \"Property\",\n    \"value\" : \"node_boot_time_seconds\"\n  },\n  \"timestamp\" : {\n    \"type\" : \"Property\",\n    \"value\" : \"1618838820\"\n  },\n  \"value\" : {\n    \"type\" : \"Property\",\n    \"value\" : \"1618480118\"\n  },\n  \"labels\" : {\n    \"type\" : \"Property\",\n    \"value\" : {\n      \"instance\" : \"node-exporter:9100\",\n      \"job\" : \"node\"\n    }\n  }\n}"
+				},
+				"url": {
+					"raw": "http://localhost:9090/ngsi-ld/v1/entities/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"ngsi-ld",
+						"v1",
+						"entities",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update metric in scorpio",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "LInk",
+						"type": "text",
+						"value": "<http://localhost:8082/context.jsonld>; rel=\"http://www.w3.org/ns/json-ld#context\"; type=\"application/ld+json\"",
+						"disabled": true
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"value\" : {\n    \"type\" : \"Property\",\n    \"value\" : \"1111\"\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9090/ngsi-ld/v1/entities/urn:ngsi-ld:Metric:15dc7c3177b43ece04a5e697045af347/attrs",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"ngsi-ld",
+						"v1",
+						"entities",
+						"urn:ngsi-ld:Metric:15dc7c3177b43ece04a5e697045af347",
+						"attrs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Debug post server",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"hello\" : \"world\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://ptsv2.com/t/pecfm-1621958001/post",
+					"protocol": "https",
+					"host": [
+						"ptsv2",
+						"com"
+					],
+					"path": [
+						"t",
+						"pecfm-1621958001",
+						"post"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List current subscriptions",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9090/ngsi-ld/v1/subscriptions/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"ngsi-ld",
+						"v1",
+						"subscriptions",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create post server subscription",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"type\": \"Subscription\",\n\t\"entities\": [{\n\t\t\"type\": \"Metric\"\n\t}],\n    \"notification\": {\n\t\t\"endpoint\": {\n\t\t\t\"uri\": \"https://ptsv2.com/t/pecfm-1621958001/post\",\n\t\t\t\"accept\": \"application/json\"\n\t\t}\n\t}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9090/ngsi-ld/v1/subscriptions/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"ngsi-ld",
+						"v1",
+						"subscriptions",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete post server subscritpion",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9090/ngsi-ld/v1/subscriptions/urn:ngsi-ld:Subscription:472425115",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"ngsi-ld",
+						"v1",
+						"subscriptions",
+						"urn:ngsi-ld:Subscription:472425115"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
