@@ -44,7 +44,7 @@ Once you are done running tests, tear the scenario down by issuing the following
 docker-compose -f scorpio-compose.yml down
 ```
 
-To subscribe to NGSI-LD TimeSeries entities from NiFi, run the following query using the curl command:
+To subscribe to NGSI-LD TimeSeries entities from NiFi, run the following query using the cURL command:
 ```
 curl --location --request POST 'http://localhost:9090/ngsi-ld/v1/subscriptions/' \
 --header 'Content-Type: application/json' \
@@ -64,7 +64,7 @@ curl --location --request POST 'http://localhost:9090/ngsi-ld/v1/subscriptions/'
 }'
 ```
 
-To delete subscriptions to NGSI-LD TimeSeries entities from NiFi, run the following query using the curl command:
+To delete subscriptions to NGSI-LD TimeSeries entities from NiFi, run the following query using the cURL command:
 ```
 curl --location --request DELETE 'http://localhost:9090/ngsi-ld/v1/subscriptions/urn:ngsi-ld:Subscription:TimeSeries:scorpio-subs'
 ```
@@ -86,7 +86,7 @@ Once you are done running tests, tear the scenario down by issuing the following
 docker-compose -f orion-compose.yml down
 ```
 
-To subscribe to NGSI-LD TimeSeries entities from NiFi, make the following query using the curl command:
+To subscribe to NGSI-LD TimeSeries entities from NiFi, run the following query using the cURL command:
 ```
 curl --location --request POST 'http://localhost:1026/ngsi-ld/v1/subscriptions/' \
 --header 'Content-Type: application/json' \
@@ -106,7 +106,7 @@ curl --location --request POST 'http://localhost:1026/ngsi-ld/v1/subscriptions/'
 }'
 ```
 
-To delete subscriptions to NGSI-LD TimeSeries entities from NiFi, run the following query using the curl command:
+To delete subscriptions to NGSI-LD TimeSeries entities from NiFi, run the following query using the cURL command:
 ```
 curl --location --request DELETE 'http://localhost:1026/ngsi-ld/v1/subscriptions/urn:ngsi-ld:Subscription:TimeSeries:orion-subs'
 ```
