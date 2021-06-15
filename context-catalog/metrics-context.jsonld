@@ -1,5 +1,6 @@
 {
     "@context": {
+        "TimeSeries": "http://example.org/TimeSeries",
         "name": "http://example.org/name",
         "timestamp": "http://example.org/timestamp",
         "value": "http://example.org/value",
