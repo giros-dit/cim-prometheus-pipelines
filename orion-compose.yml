@@ -8,7 +8,6 @@ services:
       - "8082:8080"
     volumes:
       - ./context-catalog:/web
-
   nifi:
     build:
       context: ./nifi-python
@@ -35,7 +34,6 @@ services:
       - "9099:9090"
     volumes:
       - ./prometheus/config/prometheus.yml:/etc/prometheus/prometheus.yml
-
   orion:
     image: fiware/orion-ld
     hostname: orion
