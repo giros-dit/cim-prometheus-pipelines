@@ -1,4 +1,4 @@
-﻿# cim-prometheus-pipelines
+# cim-prometheus-pipelines
 
 5G networks have led to an increase in the complexity of the management plane. In order to achieve a smart and efficient management of 5G networks, new monitoring mechanisms are required. The main problem is the huge number of data sources that exist and their heterogeneity, with their own mechanisms and formats to represent the information. We will leverage the ETSI ISG Context Information Management framework (CIM) standard, which will enable high interoperability with other monitoring systems.
 
@@ -7,6 +7,20 @@ In this work, we propose a generic architecture which allows us to aggregate and
 ![monitoring-data-aggregation-system](docs/monitoring-data-aggregation-system.png)
 
 In this repository, we are going to give different implementations of the generic architecture showed above, all of them using [Prometheus](https://prometheus.io) as a monitoring data source. Some of those implementations will be used to run performance experiments. The results extracted from the experiments will help us validate the ingestion stage implemented in our proposed monitoring data aggregation system. The last scenario will be a real use case using [Grafana](https://grafana.com) and [InfluxDB](https://www.influxdata.com/)  to visualize the monitoring information coming from Prometheus.
+
+
+<!-- TOC start -->
+### Table of Contents
+- [Prometheus NGSI-LD Information Model](#prometheus-ngsi-ld-information-model)
+- [Experiments](#experiments)
+  * [The NGSI-LD adapter](#the-ngsi-ld-adapter)
+    + [Scorpio Scenario](#scorpio-scenario)
+    + [Orion-LD Scenario](#orion-ld-scenario)
+  * [The Kafka adapter](#the-kafka-adapter)
+    + [Kafka-Avro Scenario](#kafka-avro-scenario)
+    + [Kafka-NGSI-LD Scenario](#kafka-ngsi-ld-scenario)
+- [Real use case scenario](#real-use-case-scenario)
+<!-- TOC end -->
 
 
 # Prometheus NGSI-LD Information Model
@@ -26,17 +40,17 @@ For the comparison experiments, we are going to measure the latency between the 
 
 Due to the broad usage of containers in 5G, we have decided to choose Docker Compose (_Tested with version 1.27.4_) to run all these components inside Docker (_Tested with version 19.03.13_), so that the deployment of the system could be easily done in almost any environment.
 
-Our proposed data aggregation system is loosely-coupled from the data sources. Thus,  we must implement collection data mechanisms that require no intervention from the data source owner. When it comes to Prometheus, the only way of collecting metrics is by querying the [Prometheus's REST API](https://prometheus.io/docs/prometheus/latest/querying/api/). To this end, we propose implementing an HTTP polling mechanism that collects metrics from Prometheus REST API at particular pace. Once the metrics have been collected from Prometheus, the data must to be transformed into a consumable format by the NGSI-LD context broker. [Apache NiFi](https://nifi.apache.org) framework has been chosen to fulfil this role in all 4 scenarios.
+Our proposed data aggregation system is loosely-coupled from the data sources. Thus,  we must implement collection data mechanisms that require no intervention from the data source owner. When it comes to Prometheus, the only way of collecting metrics is by querying the [Prometheus's REST API](https://prometheus.io/docs/prometheus/latest/querying/api/). To this end, we propose implementing an HTTP polling mechanism that collects metrics from Prometheus REST API at particular pace. Once the metrics have been collected from Prometheus, the data must to be transformed into a consumable format by the correspondant Broker. [Apache NiFi](https://nifi.apache.org) framework has been chosen to fulfil this role in all 4 scenarios.
 
-Now we are going to depict the 2 systems with the 2 variants, which are:
-- **The NGSI-LD adapter**
+Now we are going to depict the 2 systems with the 2 variants each, which are:
+- **System #1: The NGSI-LD adapter**
 	- Scorpio scenario
 	- Orion-LD scenario
-- **The Kafka adapter**
+- **System #2: The Kafka adapter**
 	- Kafka-Avro scenario
 	- Kafka-NGSI-LD scenario
 
-All 4 scenarios will consist in a combination of a docker-compose file and a NiFi template file. These scenarios will automatically measure the latency. For the measurement of the CPU and memory usage, we have to use the [collect_docker_stats.sh](collect_docker_stats.sh) utility (see the script usage for more information). The following example collects CPU and memory percentage usage stats for the kafka container when 60 events are sent every second in the kafka-avro scenario:
+All 4 scenarios will consist in a combination of a docker-compose file and a NiFi template file. These scenarios will automatically measure the latency. For the measurement of the CPU and memory usage, we can use the [collect_docker_stats.sh](collect_docker_stats.sh) utility (see the script usage for more information). The following example collects CPU and memory percentage usage stats for the kafka container when 60 events are sent every second in the kafka-avro scenario:
 
 ```bash
 ./collect_docker_stats.sh kafka-avro-scenario kafka 60
@@ -51,11 +65,11 @@ The NGSI-LD adapter uses an ETSI ISG CIM platform and the NGSI-LD protocol as sh
 As we can see, the operations in this figure are a direct mapping from the one defined in the previous chapter, where:
  - The Data Source is Prometheus (as expected).
  - The Producer is a custom implementation in NiFi.
- - The Broker is a ETSI ISG CIM Context Broker (Scorpio or Orion-LD).
+ - The Broker is a ETSI ISG CIM Context Broker (thus, the two variants: Scorpio or Orion-LD).
  - The Consumer is a custom implementation in NiFi.
  - The Data Sink is a CSV file.
 
-The NiFi Consumer consists of a HTTP server exposing an endpoint in a certain port of the NiFi container. To receive notifications, the Consumer has to be previously subscribed to the notification service of the Context Broker. To do so, a subscription must be sent to the Context Broker, and it will be valid until revoked. We have let a subgroup inside the NiFi template to ease the task, but we can use any HTTP Client like for example, cURL:
+The NiFi Consumer consists of a HTTP server exposing an endpoint in a certain port of the NiFi container. To receive notifications, the Consumer has to be previously subscribed to the notification service of the Context Broker. To do so, a subscription must be sent to the Context Broker, and it will be valid until revoked. We have provided a subgroup inside the NiFi template to ease the task, but we can use any HTTP Client like for example, cURL:
 ```bash
 curl --location --request POST 'http://localhost:9090/ngsi-ld/v1/subscriptions/' \
 --header 'Content-Type: application/json' \
@@ -120,7 +134,7 @@ docker-compose -f orion-compose.yml down
 
 ## The Kafka adapter
 
-This second system uses a Kafka Broker instead of a Context Broker for the transportation of the metric from the Consumer to the Producer. Here we can see the architecture detail:
+This second system uses a Kafka Broker instead of a Context Broker for the transportation of the metric from the Consumer to the Producer. Here we can see the architecture in detail:
 
 ![kafka_adapter](docs/kafka_adapter.png)
 
@@ -131,10 +145,10 @@ We can see that it follows the same architecture described in the last chapter, 
  - The Consumer is a custom implementation in NiFi.
  - The Data Sink is a CSV file.
 
-Now we are going to explain the two scenarios derived from this first system and how to set them up to perform the experiments.
+Now we are going to explain the two scenarios derived from this system and how to set them up to perform the experiments.
 
 ### Kafka-Avro Scenario
-It uses Apache Avro to encode the data before publishing it into the topic. Consequently, the Consumer is ready to ingest Avro encoded data.
+It uses [Apache Avro](https://avro.apache.org/) to encode the data before publishing it into the topic. Consequently, the Consumer is ready to ingest Avro encoded data.
 
 Start the prototype by running docker-compose:
 ```bash
@@ -179,7 +193,7 @@ In the experiments, the Data Sink was a CSV File that did not serve well our rea
 
 The flow chart of the scenario looks like this:
 
-![real-use-case flow chart](docs/real-use-case flow chart.png)
+![real-use-case-flow-chart](docs/real-use-case-flow-chart.png)
 
 Start the prototype by running docker-compose:
 ```bash
