@@ -1,9 +1,11 @@
 {
     "@context": {
+        "TimeSeries": "http://example.org/TimeSeries",
         "name": "http://example.org/name",
         "timestamp": "http://example.org/timestamp",
         "value": "http://example.org/value",
-        "labels": "http://example.org/labels"
+        "labels": "http://example.org/labels",
+        "captureTimestamp": "http://example.org/captureTimestamp"
     }
 }
 

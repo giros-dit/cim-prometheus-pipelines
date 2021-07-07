@@ -1,0 +1,37 @@
+{
+    "type": "record",
+    "name": "Timeseries",
+    "namespace": "giros.org",
+    "doc": "Representation of a Prometheus timeseries sample",
+    "fields": [
+        {
+            "name": "collectionTimestamp",
+            "doc": "A millisecond-precision timestamp of the collection at NiFi",
+            "type": "long"
+        },
+        {
+            "name": "labels",
+            "doc": "Combination of labels that identifies a particular dimensional instantiation of the timeseries",
+            "type": {
+                "type": "map",
+                "values" : "string"
+            }
+        },
+        {
+            "name": "name",
+            "doc": "Name of the metric",
+            "type": "string"
+        },
+        {
+            "name": "timestamp",
+            "doc": "A millisecond-precision timestamp of the sample",
+            "type": "long",
+            "logicalType": "local-timestamp-millis"
+        },
+        {
+            "name": "value",
+            "doc": "A float64 value of the timeseries sample",
+            "type": "double"
+        }
+    ]
+}
